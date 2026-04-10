@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>重返未来1999 · 37 转圈圈</title>
+    <title>37 · 重返未来1999</title>
     <style>
         * {
             margin: 0;
@@ -12,38 +12,231 @@
         }
 
         body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            background: #0B0B10;
+            color: #E2DCE5;
             min-height: 100vh;
-            background: #0F0F14;
-            background-image:
-                radial-gradient(circle at 20% 10%, #2E2A3F 0%, transparent 35%),
-                radial-gradient(circle at 85% 90%, #242034 0%, transparent 35%);
             display: flex;
             flex-direction: column;
             align-items: center;
             justify-content: center;
-            font-family: "Times New Roman", "SimSun", serif;
-            color: #D4C8D8;
-            overflow: hidden;
+            padding: 20px;
             position: relative;
+            overflow-x: hidden;
         }
 
+        /* 动态星空背景 */
+        .bg-animation {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at 20% 10%, #1C1A2A 0%, transparent 45%),
+                        radial-gradient(circle at 85% 90%, #161322 0%, transparent 45%);
+            z-index: -2;
+        }
+        .stars {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image:
+                radial-gradient(2px 2px at 20px 30px, rgba(210,190,255,0.3), transparent),
+                radial-gradient(2px 2px at 40px 90px, rgba(210,190,255,0.2), transparent);
+            background-size: 200px 200px;
+            animation: bgMove 12s linear infinite;
+            z-index: -1;
+            opacity: 0.4;
+        }
+        @keyframes bgMove {
+            0% { transform: translate(0, 0); }
+            100% { transform: translate(-40px, -40px); }
+        }
+
+        /* 复古边框 */
         .retro-frame {
             position: fixed;
             top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border: 2px solid #6A5E8D;
+            border: 2px solid #7E72AA;
             opacity: 0.4;
             pointer-events: none;
             z-index: 0;
         }
-
         .retro-frame::before {
             content: "";
             position: absolute;
             top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid #6A5E8D;
+            border: 1px solid #6C6296;
             opacity: 0.3;
         }
 
+        /* 主卡片 */
+        .main-card {
+            width: 100%;
+            max-width: 900px;
+            background: #12111A;
+            border: 1px solid #3B3752;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 0 60px rgba(0,0,0,0.6);
+            z-index: 1;
+        }
+
+        /* 顶部角色信息 */
+        .char-header {
+            background: #1B192A;
+            padding: 22px 30px;
+            border-bottom: 1px solid #3B3752;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+        .char-avatar {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            border: 2px solid #7E72AA;
+            object-fit: cover;
+        }
+        .char-title h1 {
+            font-size: 28px;
+            color: #E2DCE5;
+            font-weight: 600;
+        }
+        .char-title p {
+            color: #A096C0;
+            font-size: 14px;
+            margin-top: 4px;
+        }
+
+        /* 内容区 */
+        .content {
+            padding: 36px 40px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 26px;
+        }
+
+        /* 角色档案面板 */
+        .profile-panel {
+            background: #181624;
+            border: 1px solid #4A4466;
+            border-radius: 10px;
+            padding: 20px 24px;
+            width: 100%;
+            max-width: 360px;
+        }
+        .profile-title {
+            color: #D1B866;
+            font-size: 16px;
+            text-align: center;
+            margin-bottom: 14px;
+            font-weight: 600;
+        }
+        .profile-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+            color: #D0C7E0;
+            border-bottom: 1px dashed #332F44;
+        }
+        .profile-item:last-child {
+            border-bottom: none;
+        }
+        .voice-btn {
+            background: #2D2944;
+            color: #D1B866;
+            border: 1px solid #D1B866;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: 0.2s;
+            margin-top: 10px;
+            width: 100%;
+        }
+        .voice-btn:hover {
+            background: #D1B866;
+            color: #1B192A;
+        }
+
+        /* 旋转卡片 - 圆形 */
+        .circle-box {
+            width: 290px;
+            height: 290px;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+        }
+        .circle-box img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid #6C6296;
+            box-shadow: 0 0 50px rgba(110,96,160,0.35);
+        }
+
+        /* 点击特效 */
+        .tap-effect {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: tap1999 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+        @keyframes tap1999 {
+            0% { transform: scale(0.94); background: rgba(120,106,180,0.1); opacity:1; }
+            100% { transform: scale(1.18); background:transparent; opacity:0; }
+        }
+
+        /* 计数 */
+        .count-panel {
+            background: #181624;
+            border: 1px solid #4A4466;
+            padding: 18px 32px;
+            border-radius: 10px;
+            text-align: center;
+            min-width: 280px;
+        }
+        .count-label {
+            font-size: 15px;
+            color: #B8AFD0;
+        }
+        #totalCount {
+            font-size: 32px;
+            color: #D1B866;
+            font-weight: bold;
+            margin: 6px 0 0;
+        }
+
+        /* 排行榜 */
+        .rank-panel {
+            background: #181624;
+            border: 1px solid #4A4466;
+            padding: 16px 22px;
+            border-radius: 10px;
+            width: 100%;
+            max-width: 360px;
+        }
+        .rank-title {
+            text-align: center;
+            color: #D1B866;
+            font-size: 16px;
+            margin-bottom: 12px;
+            font-weight: 600;
+        }
+        .rank-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            font-size: 14px;
+            color: #D0C7E0;
+            border-bottom: 1px dashed #332F44;
+        }
+        .rank-item:last-child {
+            border-bottom: none;
+        }
+
+        /* 登录注册 */
         .auth-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
@@ -53,213 +246,101 @@
             justify-content: center;
             z-index: 9999;
         }
-
         .auth-box {
-            background: #1A1626;
-            border: 2px solid #7F6AFF;
+            background: #12111A;
+            border: 1px solid #3B3752;
             width: 90%;
             max-width: 380px;
             padding: 40px 30px;
-            border-radius: 2px;
+            border-radius: 12px;
             text-align: center;
-            box-shadow: 0 0 40px rgba(127,106,255,0.2);
+            box-shadow: 0 0 40px rgba(126, 114, 170, 0.2);
         }
-
         .auth-title {
             font-size: 24px;
-            color: #E1D5FF;
-            margin-bottom: 26px;
+            color: #E2DCE5;
+            margin-bottom: 24px;
             letter-spacing: 2px;
         }
-
         .auth-input {
             width: 100%;
             padding: 12px 14px;
             margin: 8px 0;
-            background: #242034;
-            border: 1px solid #6A5E8D;
-            color: #E1D5FF;
-            font-size: 15px;
+            background: #1B192A;
+            border: 1px solid #4A4466;
+            color: #E2DCE5;
+            border-radius: 6px;
             outline: none;
         }
-
         .auth-btn {
             width: 100%;
             padding: 12px;
             margin-top: 12px;
-            background: #2D2744;
-            color: #FFE466;
-            border: 2px solid #FFE466;
+            background: #2D2944;
+            color: #D1B866;
+            border: 1px solid #D1B866;
+            border-radius: 6px;
             cursor: pointer;
-            font-size: 16px;
             transition: 0.2s;
         }
-
         .auth-btn:hover {
-            background: #FFE466;
-            color: #1A1626;
+            background: #D1B866;
+            color: #1B192A;
         }
-
         .tab {
             display: flex;
-            gap: 8px;
+            gap: 10px;
             margin-bottom: 20px;
         }
-
         .tab span {
             flex: 1;
             padding: 8px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
+            color: #988FB8;
         }
-
         .tab .active {
-            border-color: #7F6AFF;
-            color: #E1D5FF;
+            border-color: #7E72AA;
+            color: #E2DCE5;
         }
 
-        .game-container {
-            display: none;
-            text-align: center;
-        }
-
-        .user-info {
-            position: absolute;
-            top: 20px;
-            left: 20px;
-            color: #A899C7;
-            font-size: 14px;
-            z-index: 10;
-        }
-
-        .title {
-            font-size: 34px;
-            letter-spacing: 5px;
-            color: #E1D5FF;
-            text-shadow: 0 0 14px #7F6AFF;
-            margin-bottom: 8px;
-            z-index: 1;
-        }
-
-        .subtitle {
-            font-size: 14px;
-            color: #A899C7;
-            letter-spacing: 2px;
-            margin-bottom: 24px;
-            z-index: 1;
-        }
-
-        .count-panel {
-            background: rgba(26, 22, 38, 0.85);
-            border: 2px solid #7F6AFF;
-            padding: 14px 28px;
-            border-radius: 2px;
-            margin-bottom: 24px;
-            box-shadow: 0 0 24px rgba(127,106,255,0.15);
-            z-index: 1;
-        }
-
-        .count-text {
-            font-size: 15px;
-            color: #C0B6E0;
-        }
-
-        #totalCount {
-            font-size: 28px;
-            color: #FFE466;
-            font-weight: bold;
-            margin: 0 8px;
-        }
-
-        .rank-panel {
-            position: absolute;
-            top: 20px;
-            right: 20px;
-            background: rgba(26,22,38,0.9);
-            border: 1px solid #7F6AFF;
-            padding: 14px 18px;
-            width: 220px;
-            max-height: 260px;
-            overflow-y: auto;
-            z-index: 10;
-        }
-
-        .rank-title {
-            color: #E1D5FF;
-            font-size: 14px;
-            margin-bottom: 8px;
-            text-align: center;
-        }
-
-        .rank-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 4px 0;
-            font-size: 13px;
-            color: #C0B6E0;
-        }
-
-        .circle-box {
-            width: 280px;
-            height: 280px;
-            position: relative;
-            cursor: pointer;
-            user-select: none;
-            margin: 0 auto;
-            z-index: 1;
-        }
-
-        .circle-box img {
-            width: 100%; height: 100%;
-            object-fit: contain;
-            border-radius: 50%;
-            border: 3px solid #8A76FF;
-            box-shadow: 0 0 45px rgba(127,106,255,0.5);
-        }
-
-        .tap-effect {
-            position: absolute;
-            width: 100%; height: 100%;
-            border-radius: 50%;
-            pointer-events: none;
-            animation: tap1999 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
-        }
-
-        @keyframes tap1999 {
-            0% { transform: scale(0.92); background: rgba(140,120,255,0.12); box-shadow: 0 0 0 1px rgba(140,120,255,0.5),0 0 14px rgba(140,120,255,0.35); opacity:1; }
-            100% { transform: scale(1.22); background:transparent; box-shadow:0 0 0 1px transparent,0 0 24px transparent; opacity:0; }
-        }
-
+        /* 奖励弹窗 */
         .reward-modal {
             position: fixed; top:0; left:0; width:100%; height:100%;
             background: rgba(0,0,0,0.8); display:none;
             align-items:center; justify-content:center; z-index:999;
         }
-
         .reward-box {
-            background:#1A1626; border:3px solid #FFE466;
-            width:90%; max-width:400px; padding:40px 28px;
-            text-align:center; box-shadow:0 0 60px rgba(255,228,102,0.25);
+            background:#1B192A; border:1px solid #D1B866;
+            width:90%; max-width:380px; padding:36px 28px;
+            text-align:center; border-radius:12px;
             animation:popIn 0.5s ease;
         }
-
         @keyframes popIn { 0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;} }
+        .reward-title { font-size:20px; color:#D1B866; margin-bottom:18px; }
+        .reward-line { font-size:16px; color:#E2DCE5; line-height:1.6; margin-bottom:24px; }
+        .close-btn { background:#2D2944; color:#D1B866; border:1px solid #D1B866; padding:10px 24px; border-radius:6px; cursor:pointer; }
+        .close-btn:hover { background:#D1B866; color:#1B192A; }
 
-        .reward-title { font-size:22px; color:#FFE466; margin-bottom:20px; }
-        .reward-line { font-size:17px; color:#E1D5FF; line-height:1.6; margin-bottom:26px; }
-        .close-btn { background:#2D2744; color:#FFE466; border:2px solid #FFE466; padding:10px 24px; cursor:pointer; }
-        .close-btn:hover { background:#FFE466; color:#1A1626; }
-
-        .tip { margin-top:20px; color:#888; font-size:13px; }
+        .user-info {
+            position: absolute;
+            top: 16px;
+            left: 20px;
+            color: #A096C0;
+            font-size: 13px;
+        }
     </style>
 </head>
 <body>
 
 <div class="retro-frame"></div>
+<div class="bg-animation"></div>
+<div class="stars"></div>
 
+<!-- 登录注册 -->
 <div class="auth-modal" id="authModal">
     <div class="auth-box">
-        <div class="auth-title">重返未来 1999</div>
+        <div class="auth-title">37 · 重返未来1999</div>
         <div class="tab">
             <span class="active" onclick="switchTab('login')">登录</span>
             <span onclick="switchTab('reg')">注册</span>
@@ -279,29 +360,49 @@
     </div>
 </div>
 
-<div class="game-container" id="gameContainer">
-    <div class="user-info" id="userInfo">用户：</div>
-
-    <div class="rank-panel">
-        <div class="rank-title">🏆 全服转圈排行榜</div>
-        <div id="rankList"></div>
+<!-- 主界面 -->
+<div class="main-card" id="gameContainer" style="display:none;">
+    <div class="char-header">
+        <img src="https://res1999.huijiwiki.com/avatars/37.png" class="char-avatar">
+        <div class="char-title">
+            <h1>37</h1>
+            <p>无限旋转的温柔规律</p>
+        </div>
     </div>
 
-    <div class="title">重返未来 1999</div>
-    <div class="subtitle">37 · 无尽旋转</div>
+    <div class="content">
+        <div class="user-info" id="userInfo">用户：</div>
 
-    <div class="count-panel">
-        <span class="count-text">我的转圈数：</span>
-        <span id="totalCount">0</span>
+        <!-- 角色档案 -->
+        <div class="profile-panel">
+            <div class="profile-title">📁 角色档案</div>
+            <div class="profile-item"><span>角色</span><span>37</span></div>
+            <div class="profile-item"><span>属性</span><span>灵</span></div>
+            <div class="profile-item"><span>爱好</span><span>旋转</span></div>
+            <div class="profile-item"><span>语录</span><span>世界是圆的</span></div>
+            <button class="voice-btn" onclick="play37Voice()">▶ 播放37语音</button>
+        </div>
+
+        <!-- 旋转图片 -->
+        <div id="circleBox" class="circle-box">
+            <img src="https://res1999.huijiwiki.com/characters/37.png">
+        </div>
+
+        <!-- 计数 -->
+        <div class="count-panel">
+            <div class="count-label">我的转圈数</div>
+            <div id="totalCount">0</div>
+        </div>
+
+        <!-- 排行榜 -->
+        <div class="rank-panel">
+            <div class="rank-title">🏆 全服排行榜</div>
+            <div id="rankList"></div>
+        </div>
     </div>
-
-    <div id="circleBox" class="circle-box">
-        <img src="https://p.qqan.com/up/2021-3/16153661746739976.jpg" alt="37">
-    </div>
-
-    <div class="tip">点击旋转 · 每 5 圈获得留言 · 全服排行榜实时更新</div>
 </div>
 
+<!-- 弹窗 -->
 <div class="reward-modal" id="rewardModal">
     <div class="reward-box">
         <div class="reward-title">🎉 达成 🎉</div>
@@ -309,6 +410,8 @@
         <button class="close-btn" onclick="closeReward()">继续</button>
     </div>
 </div>
+
+<audio id="voice37" src="https://res1999.huijiwiki.com/voices/37_1.mp3"></audio>
 
 <script>
     let users = JSON.parse(localStorage.getItem("circle37_users")) || {};
@@ -324,6 +427,14 @@
         "你是我见过最有耐心的旋转伙伴。"
     ];
 
+    // 播放语音
+    function play37Voice() {
+        let audio = document.getElementById("voice37");
+        audio.currentTime = 0;
+        audio.play();
+    }
+
+    // 切换登录注册
     function switchTab(t) {
         document.querySelectorAll(".tab span").forEach(s=>s.classList.remove("active"));
         event.target.classList.add("active");
@@ -331,6 +442,7 @@
         document.getElementById("regForm").style.display = t=="reg"?"block":"none";
     }
 
+    // 注册
     function register() {
         let u = document.getElementById("regUser").value.trim();
         let p = document.getElementById("regPwd").value.trim();
@@ -342,6 +454,7 @@
         switchTab("login");
     }
 
+    // 登录
     function login() {
         let u = document.getElementById("loginUser").value.trim();
         let p = document.getElementById("loginPwd").value.trim();
@@ -361,15 +474,16 @@
     function refreshRank() {
         let list = document.getElementById("rankList");
         list.innerHTML = "";
-        let arr = Object.entries(users).sort((a,b)=>b[1].count - a[1].count).slice(0,12);
+        let arr = Object.entries(users).sort((a,b)=>b[1].count - a[1].count).slice(0,8);
         arr.forEach(([name, data],i)=>{
             let div = document.createElement("div");
             div.className = "rank-item";
-            div.innerHTML = `<span>${i+1}. ${name}</span><span>${data.count}圈</span>`;
+            div.innerHTML = `<span>${i+1}. ${name}</span><span>${data.count} 圈</span>`;
             list.appendChild(div);
         });
     }
 
+    // 旋转
     let rotateY = 0;
     const circleBox = document.getElementById("circleBox");
 
