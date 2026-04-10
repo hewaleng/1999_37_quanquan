@@ -11,8 +11,11 @@
             box-sizing: border-box;
         }
 
+        /* ========== 重返未来1999 官方字体 ========== */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
+        
         body {
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+            font-family: "Noto Serif SC", "Times New Roman", serif;
             background: #0B0B10;
             color: #E2DCE5;
             min-height: 100vh;
@@ -23,14 +26,18 @@
             padding: 20px;
             position: relative;
             overflow-x: hidden;
+            letter-spacing: 0.5px;
         }
 
-        /* 动态星空背景 */
+        /* 你要的 37 官方全屏背景 */
         .bg-animation {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 20% 10%, #1C1A2A 0%, transparent 45%),
-                        radial-gradient(circle at 85% 90%, #161322 0%, transparent 45%);
+            background-image: url("https://patchwiki.biligame.com/images/reverse1999/thumb/7/7a/mcgixs76t5dip595bno45qf4yzqx2jm.png/700px-%E7%AB%8B%E7%BB%98_37_03.png");
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            opacity: 0.22;
             z-index: -2;
         }
         .stars {
@@ -337,6 +344,11 @@
 <div class="bg-animation"></div>
 <div class="stars"></div>
 
+<!-- ========== 你要的 BGM 背景音乐 ========== -->
+<audio id="bgm" loop autoplay preload="auto" style="display:none;">
+  <source src="https://up.iiilab.com/2025/04/10/618228474918.mp3" type="audio/mpeg">
+</audio>
+
 <!-- 登录注册 -->
 <div class="auth-modal" id="authModal">
     <div class="auth-box">
@@ -354,7 +366,7 @@
 
         <div id="regForm" style="display:none;">
             <input class="auth-input" id="regUser" placeholder="设置唯一用户名">
-            <input class="auth-input" id="regPwd" type="password" placeholder="设置密码">
+            <input class="auth-input" id="regPwd" type="password" placeholder="密码">
             <button class="auth-btn" onclick="register()">注册</button>
         </div>
     </div>
@@ -363,7 +375,7 @@
 <!-- 主界面 -->
 <div class="main-card" id="gameContainer" style="display:none;">
     <div class="char-header">
-        <img src="https://res1999.huijiwiki.com/avatars/37.png" class="char-avatar">
+        <img src="https://gd-hbimg.huaban.com/005b1c2cda8ce2c356bcc683a19312ffb044c9deef10f-H9CO3e_fw658" class="char-avatar">
         <div class="char-title">
             <h1>37</h1>
             <p>无限旋转的温柔规律</p>
@@ -385,7 +397,7 @@
 
         <!-- 旋转图片 -->
         <div id="circleBox" class="circle-box">
-            <img src="https://res1999.huijiwiki.com/characters/37.png">
+            <img src="https://gd-hbimg.huaban.com/005b1c2cda8ce2c356bcc683a19312ffb044c9deef10f-H9CO3e_fw658">
         </div>
 
         <!-- 计数 -->
@@ -416,6 +428,13 @@
 <script>
     let users = JSON.parse(localStorage.getItem("circle37_users")) || {};
     let currentUser = null;
+
+    // 自动播放背景音乐（兼容浏览器限制）
+    let bgm = document.getElementById("bgm");
+    bgm.volume = 0.15;
+    document.addEventListener('click', function() {
+        bgm.play();
+    }, { once: true });
 
     const lines = [
         "旋转是世界上最温柔的规律，也是我最喜欢的事。",
