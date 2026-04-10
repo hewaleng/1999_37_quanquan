@@ -9,15 +9,41 @@
             margin: 0;
             padding: 0;
             box-sizing: border-box;
+            transition: all 0.3s ease;
         }
 
         /* ========== 重返未来1999 官方字体 ========== */
         @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;600;700&display=swap');
         
+        :root {
+            --bg: #0B0B10;
+            --card: #12111A;
+            --header: #1B192A;
+            --text: #E2DCE5;
+            --text-secondary: #A096C0;
+            --border: #3B3752;
+            --accent: #7E72AA;
+            --gold: #D1B866;
+            --overlay: rgba(18,17,26,0.4);
+            --glass: rgba(18,17,26,0.25);
+        }
+        .light-mode {
+            --bg: #f0eef5;
+            --card: #ffffff;
+            --header: #f8f5ff;
+            --text: #2A2533;
+            --text-secondary: #5B5370;
+            --border: #D4CFE0;
+            --accent: #7E72AA;
+            --gold: #b98f42;
+            --overlay: rgba(255,255,255,0.4);
+            --glass: rgba(255,255,255,0.25);
+        }
+
         body {
             font-family: "Noto Serif SC", "Times New Roman", serif;
-            background: #0B0B10;
-            color: #E2DCE5;
+            background: var(--bg);
+            color: var(--text);
             min-height: 100vh;
             display: flex;
             flex-direction: column;
@@ -27,6 +53,52 @@
             position: relative;
             overflow-x: hidden;
             letter-spacing: 0.5px;
+        }
+
+        /* ========== 滑动主题开关 ========== */
+        .theme-switch {
+            position: fixed;
+            top: 24px;
+            right: 24px;
+            z-index: 999;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            backdrop-filter: blur(6px);
+            padding: 6px 10px;
+            border-radius: 99px;
+            border: 1px solid var(--border);
+            background: var(--glass);
+        }
+        .theme-switch span {
+            font-size: 14px;
+            color: var(--text-secondary);
+        }
+        .switch {
+            position: relative;
+            width: 40px;
+            height: 20px;
+            background: var(--border);
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .switch-circle {
+            position: absolute;
+            top: 2px;
+            left: 2px;
+            width: 16px;
+            height: 16px;
+            background: var(--gold);
+            border-radius: 50%;
+            transition: all 0.3s cubic-bezier(0.2,0.8,0.2,1);
+        }
+        .switch.active .switch-circle {
+            left: 22px;
+            background: var(--gold);
+        }
+        .switch.active {
+            background: var(--accent);
         }
 
         /* 你要的 37 官方全屏背景 */
@@ -60,7 +132,7 @@
         .retro-frame {
             position: fixed;
             top: 12px; left: 12px; right: 12px; bottom: 12px;
-            border: 2px solid #7E72AA;
+            border: 2px solid var(--accent);
             opacity: 0.4;
             pointer-events: none;
             z-index: 0;
@@ -69,7 +141,7 @@
             content: "";
             position: absolute;
             top: 4px; left: 4px; right: 4px; bottom: 4px;
-            border: 1px solid #6C6296;
+            border: 1px solid var(--border);
             opacity: 0.3;
         }
 
@@ -77,19 +149,25 @@
         .main-card {
             width: 100%;
             max-width: 900px;
-            background: #12111A;
-            border: 1px solid #3B3752;
-            border-radius: 12px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
             overflow: hidden;
-            box-shadow: 0 0 60px rgba(0,0,0,0.6);
+            box-shadow: 0 0 60px rgba(0,0,0,0.15);
             z-index: 1;
         }
 
         /* 顶部角色信息 */
         .char-header {
-            background: #1B192A;
+            background: var(--header);
             padding: 22px 30px;
-            border-bottom: 1px solid #3B3752;
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+        }
+        .char-left {
             display: flex;
             align-items: center;
             gap: 20px;
@@ -98,18 +176,37 @@
             width: 80px;
             height: 80px;
             border-radius: 50%;
-            border: 2px solid #7E72AA;
+            border: 2px solid var(--accent);
             object-fit: cover;
         }
         .char-title h1 {
             font-size: 28px;
-            color: #E2DCE5;
+            color: var(--text);
             font-weight: 600;
         }
         .char-title p {
-            color: #A096C0;
+            color: var(--text-secondary);
             font-size: 14px;
             margin-top: 4px;
+        }
+
+        /* 设置按钮 */
+        .setting-btn {
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background: transparent;
+            border: 1px solid var(--border);
+            color: var(--text-secondary);
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .setting-btn:hover {
+            color: var(--gold);
+            border-color: var(--accent);
         }
 
         /* 内容区 */
@@ -121,49 +218,6 @@
             gap: 26px;
         }
 
-        /* 角色档案面板 */
-        .profile-panel {
-            background: #181624;
-            border: 1px solid #4A4466;
-            border-radius: 10px;
-            padding: 20px 24px;
-            width: 100%;
-            max-width: 360px;
-        }
-        .profile-title {
-            color: #D1B866;
-            font-size: 16px;
-            text-align: center;
-            margin-bottom: 14px;
-            font-weight: 600;
-        }
-        .profile-item {
-            display: flex;
-            justify-content: space-between;
-            padding: 6px 0;
-            font-size: 14px;
-            color: #D0C7E0;
-            border-bottom: 1px dashed #332F44;
-        }
-        .profile-item:last-child {
-            border-bottom: none;
-        }
-        .voice-btn {
-            background: #2D2944;
-            color: #D1B866;
-            border: 1px solid #D1B866;
-            padding: 8px 16px;
-            border-radius: 6px;
-            cursor: pointer;
-            transition: 0.2s;
-            margin-top: 10px;
-            width: 100%;
-        }
-        .voice-btn:hover {
-            background: #D1B866;
-            color: #1B192A;
-        }
-
         /* 旋转卡片 - 圆形 */
         .circle-box {
             width: 290px;
@@ -171,13 +225,15 @@
             position: relative;
             cursor: pointer;
             user-select: none;
+            overflow: hidden;
         }
         .circle-box img {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            object-position: center 18%;
             border-radius: 50%;
-            border: 3px solid #6C6296;
+            border: 3px solid var(--accent);
             box-shadow: 0 0 50px rgba(110,96,160,0.35);
         }
 
@@ -195,38 +251,66 @@
             100% { transform: scale(1.18); background:transparent; opacity:0; }
         }
 
+        /* ========== 所有方框统一：精致玻璃质感 + 复古花纹 ========== */
+        .panel {
+            background-image: url('https://ts1.tc.mm.bing.net/th/id/R-C.bda75306fc52bbbd14fd201f79db3384?rik=L%2fGtdfLbtApjgw&riu=http%3a%2f%2fn.sinaimg.cn%2fsinakd20250117ac%2f600%2fw1920h1080%2f20250117%2f5b61-26b1b0bb281a25eb0ff855bb39c04066.jpg&ehk=ix4bFBHkjvpAp%2bdZmP2WMcw5cFbwp6IEi9jhXRKAbqQ%3d&risl=&pid=ImgRaw&r=0');
+            background-size: cover;
+            background-position: center;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            position: relative;
+            backdrop-filter: blur(8px);
+        }
+        .panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: var(--glass);
+            border-radius: 12px;
+            z-index: 0;
+        }
+        .panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image:
+                radial-gradient(circle at 20% 30%, var(--accent) 0.5px, transparent 0.5px),
+                radial-gradient(circle at 70% 80%, var(--gold) 0.5px, transparent 0.5px);
+            background-size: 24px 24px;
+            opacity: 0.2;
+            z-index: 0;
+        }
+        .panel * {
+            position: relative;
+            z-index: 1;
+        }
+
         /* 计数 */
         .count-panel {
-            background: #181624;
-            border: 1px solid #4A4466;
-            padding: 18px 32px;
-            border-radius: 10px;
+            padding: 20px 32px;
             text-align: center;
             min-width: 280px;
         }
         .count-label {
             font-size: 15px;
-            color: #B8AFD0;
+            color: var(--text-secondary);
         }
         #totalCount {
             font-size: 32px;
-            color: #D1B866;
+            color: var(--gold);
             font-weight: bold;
             margin: 6px 0 0;
         }
 
         /* 排行榜 */
         .rank-panel {
-            background: #181624;
-            border: 1px solid #4A4466;
-            padding: 16px 22px;
-            border-radius: 10px;
+            padding: 20px 24px;
             width: 100%;
             max-width: 360px;
         }
         .rank-title {
             text-align: center;
-            color: #D1B866;
+            color: var(--gold);
             font-size: 16px;
             margin-bottom: 12px;
             font-weight: 600;
@@ -234,10 +318,10 @@
         .rank-item {
             display: flex;
             justify-content: space-between;
-            padding: 6px 0;
+            padding: 8px 0;
             font-size: 14px;
-            color: #D0C7E0;
-            border-bottom: 1px dashed #332F44;
+            color: var(--text);
+            border-bottom: 1px dashed var(--border);
         }
         .rank-item:last-child {
             border-bottom: none;
@@ -247,25 +331,26 @@
         .auth-modal {
             position: fixed;
             top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.85);
+            background: rgba(0,0,0,0.6);
             display: flex;
             align-items: center;
             justify-content: center;
             z-index: 9999;
+            backdrop-filter: blur(6px);
         }
         .auth-box {
-            background: #12111A;
-            border: 1px solid #3B3752;
             width: 90%;
             max-width: 380px;
             padding: 40px 30px;
-            border-radius: 12px;
+            border: 1px solid var(--border);
+            border-radius: 16px;
             text-align: center;
-            box-shadow: 0 0 40px rgba(126, 114, 170, 0.2);
+            background: var(--card);
+            backdrop-filter: blur(10px);
         }
         .auth-title {
             font-size: 24px;
-            color: #E2DCE5;
+            color: var(--text);
             margin-bottom: 24px;
             letter-spacing: 2px;
         }
@@ -273,26 +358,25 @@
             width: 100%;
             padding: 12px 14px;
             margin: 8px 0;
-            background: #1B192A;
-            border: 1px solid #4A4466;
-            color: #E2DCE5;
-            border-radius: 6px;
+            background: var(--glass);
+            border: 1px solid var(--border);
+            color: var(--text);
+            border-radius: 8px;
             outline: none;
         }
         .auth-btn {
             width: 100%;
             padding: 12px;
             margin-top: 12px;
-            background: #2D2944;
-            color: #D1B866;
-            border: 1px solid #D1B866;
-            border-radius: 6px;
+            background: transparent;
+            color: var(--gold);
+            border: 1px solid var(--gold);
+            border-radius: 8px;
             cursor: pointer;
-            transition: 0.2s;
         }
         .auth-btn:hover {
-            background: #D1B866;
-            color: #1B192A;
+            background: var(--gold);
+            color: var(--bg);
         }
         .tab {
             display: flex;
@@ -304,52 +388,105 @@
             padding: 8px;
             cursor: pointer;
             border-bottom: 2px solid transparent;
-            color: #988FB8;
+            color: var(--text-secondary);
         }
         .tab .active {
-            border-color: #7E72AA;
-            color: #E2DCE5;
+            border-color: var(--accent);
+            color: var(--text);
         }
 
         /* 奖励弹窗 */
         .reward-modal {
             position: fixed; top:0; left:0; width:100%; height:100%;
-            background: rgba(0,0,0,0.8); display:none;
+            background: rgba(0,0,0,0.6); display:none;
             align-items:center; justify-content:center; z-index:999;
+            backdrop-filter: blur(6px);
         }
         .reward-box {
-            background:#1B192A; border:1px solid #D1B866;
             width:90%; max-width:380px; padding:36px 28px;
-            text-align:center; border-radius:12px;
+            text-align:center; border-radius:16px;
             animation:popIn 0.5s ease;
+            background: var(--card);
+            border: 1px solid var(--border);
         }
         @keyframes popIn { 0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;} }
-        .reward-title { font-size:20px; color:#D1B866; margin-bottom:18px; }
-        .reward-line { font-size:16px; color:#E2DCE5; line-height:1.6; margin-bottom:24px; }
-        .close-btn { background:#2D2944; color:#D1B866; border:1px solid #D1B866; padding:10px 24px; border-radius:6px; cursor:pointer; }
-        .close-btn:hover { background:#D1B866; color:#1B192A; }
+        .reward-title { font-size:20px; color:var(--gold); margin-bottom:18px; }
+        .reward-line { font-size:16px; color:var(--text); line-height:1.6; margin-bottom:24px; }
+        .close-btn { background:transparent; color:var(--gold); border:1px solid var(--gold); padding:10px 24px; border-radius:8px; cursor:pointer; }
+        .close-btn:hover { background:var(--gold); color:var(--bg); }
+
+        /* 设置弹窗 */
+        .setting-modal {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.6); display:none;
+            align-items:center; justify-content:center; z-index:9999;
+            backdrop-filter: blur(6px);
+        }
+        .setting-box {
+            width:90%; max-width:380px;
+            background: var(--card);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 32px;
+            text-align: center;
+        }
+        .setting-title {
+            font-size: 22px;
+            color: var(--text);
+            margin-bottom: 24px;
+        }
+        .logout-btn {
+            width: 100%;
+            padding: 14px;
+            background: transparent;
+            color: #e65252;
+            border: 1px solid #e65252;
+            border-radius: 10px;
+            font-size: 16px;
+            cursor: pointer;
+        }
+        .logout-btn:hover {
+            background: #e65252;
+            color: white;
+        }
+        .close-setting {
+            margin-top: 16px;
+            background: transparent;
+            border: none;
+            color: var(--text-secondary);
+            cursor: pointer;
+            font-size: 14px;
+        }
 
         .user-info {
             position: absolute;
             top: 16px;
             left: 20px;
-            color: #A096C0;
+            color: var(--text-secondary);
             font-size: 13px;
         }
     </style>
 </head>
 <body>
 
+<!-- 滑动明暗开关 -->
+<div class="theme-switch">
+    <span>🌙</span>
+    <div class="switch" id="themeToggle">
+        <div class="switch-circle"></div>
+    </div>
+    <span>☀️</span>
+</div>
+
 <div class="retro-frame"></div>
 <div class="bg-animation"></div>
 <div class="stars"></div>
 
-<!-- ========== 你要的 BGM 背景音乐 ========== -->
 <audio id="bgm" loop autoplay preload="auto" style="display:none;">
   <source src="https://up.iiilab.com/2025/04/10/618228474918.mp3" type="audio/mpeg">
 </audio>
 
-<!-- 登录注册 -->
+<!-- 登录弹窗 -->
 <div class="auth-modal" id="authModal">
     <div class="auth-box">
         <div class="auth-title">37 · 重返未来1999</div>
@@ -357,13 +494,11 @@
             <span class="active" onclick="switchTab('login')">登录</span>
             <span onclick="switchTab('reg')">注册</span>
         </div>
-
         <div id="loginForm">
             <input class="auth-input" id="loginUser" placeholder="用户名">
             <input class="auth-input" id="loginPwd" type="password" placeholder="密码">
             <button class="auth-btn" onclick="login()">登录</button>
         </div>
-
         <div id="regForm" style="display:none;">
             <input class="auth-input" id="regUser" placeholder="设置唯一用户名">
             <input class="auth-input" id="regPwd" type="password" placeholder="密码">
@@ -375,51 +510,47 @@
 <!-- 主界面 -->
 <div class="main-card" id="gameContainer" style="display:none;">
     <div class="char-header">
-        <img src="https://gd-hbimg.huaban.com/005b1c2cda8ce2c356bcc683a19312ffb044c9deef10f-H9CO3e_fw658" class="char-avatar">
-        <div class="char-title">
-            <h1>37</h1>
-            <p>无限旋转的温柔规律</p>
+        <div class="char-left">
+            <img src="https://ts4.tc.mm.bing.net/th/id/OIP-C.nkf-5afXmYdzaLT4LD9sWwHaHa?rs=1&pid=ImgDetMain&o=7&rm=3" class="char-avatar">
+            <div class="char-title">
+                <h1>37</h1>
+                <p>无限旋转的温柔规律</p>
+            </div>
         </div>
+        <button class="setting-btn" onclick="openSetting()">⚙️</button>
     </div>
 
     <div class="content">
         <div class="user-info" id="userInfo">用户：</div>
-
-        <!-- 角色档案 -->
-        <div class="profile-panel">
-            <div class="profile-title">📁 角色档案</div>
-            <div class="profile-item"><span>角色</span><span>37</span></div>
-            <div class="profile-item"><span>属性</span><span>灵</span></div>
-            <div class="profile-item"><span>爱好</span><span>旋转</span></div>
-            <div class="profile-item"><span>语录</span><span>世界是圆的</span></div>
-            <button class="voice-btn" onclick="play37Voice()">▶ 播放37语音</button>
-        </div>
-
-        <!-- 旋转图片 -->
         <div id="circleBox" class="circle-box">
-            <img src="https://gd-hbimg.huaban.com/005b1c2cda8ce2c356bcc683a19312ffb044c9deef10f-H9CO3e_fw658">
+            <img src="https://i.bobopic.com/small/117262820.jpg">
         </div>
-
-        <!-- 计数 -->
-        <div class="count-panel">
+        <div class="panel count-panel">
             <div class="count-label">我的转圈数</div>
             <div id="totalCount">0</div>
         </div>
-
-        <!-- 排行榜 -->
-        <div class="rank-panel">
+        <div class="panel rank-panel">
             <div class="rank-title">🏆 全服排行榜</div>
             <div id="rankList"></div>
         </div>
     </div>
 </div>
 
-<!-- 弹窗 -->
+<!-- 奖励弹窗 -->
 <div class="reward-modal" id="rewardModal">
     <div class="reward-box">
         <div class="reward-title">🎉 达成 🎉</div>
         <div class="reward-line" id="rewardLine"></div>
         <button class="close-btn" onclick="closeReward()">继续</button>
+    </div>
+</div>
+
+<!-- 设置弹窗 -->
+<div class="setting-modal" id="settingModal">
+    <div class="setting-box">
+        <div class="setting-title">设置</div>
+        <button class="logout-btn" onclick="logout()">退出登录</button>
+        <button class="close-setting" onclick="closeSetting()">关闭</button>
     </div>
 </div>
 
@@ -429,12 +560,38 @@
     let users = JSON.parse(localStorage.getItem("circle37_users")) || {};
     let currentUser = null;
 
-    // 自动播放背景音乐（兼容浏览器限制）
+    // ========== 滑动切换明暗模式 ==========
+    const themeToggle = document.getElementById("themeToggle");
+    function toggleTheme() {
+        document.body.classList.toggle("light-mode");
+        themeToggle.classList.toggle("active");
+        localStorage.setItem("theme", document.body.classList.contains("light-mode") ? "light" : "dark");
+    }
+    themeToggle.addEventListener("click", toggleTheme);
+
+    // 加载保存的主题
+    if(localStorage.getItem("theme") === "light"){
+        document.body.classList.add("light-mode");
+        themeToggle.classList.add("active");
+    }
+
+    // 自动登录
+    window.onload = function(){
+        let remember = localStorage.getItem("rememberLogin");
+        if(remember && users[remember]){
+            currentUser = remember;
+            document.getElementById("authModal").style.display = "none";
+            document.getElementById("gameContainer").style.display = "block";
+            document.getElementById("userInfo").innerText = "用户：" + currentUser;
+            refreshCount();
+            refreshRank();
+        }
+    }
+
+    // 背景音乐
     let bgm = document.getElementById("bgm");
     bgm.volume = 0.15;
-    document.addEventListener('click', function() {
-        bgm.play();
-    }, { once: true });
+    document.addEventListener('click', () => bgm.play(), { once: true });
 
     const lines = [
         "旋转是世界上最温柔的规律，也是我最喜欢的事。",
@@ -446,14 +603,6 @@
         "你是我见过最有耐心的旋转伙伴。"
     ];
 
-    // 播放语音
-    function play37Voice() {
-        let audio = document.getElementById("voice37");
-        audio.currentTime = 0;
-        audio.play();
-    }
-
-    // 切换登录注册
     function switchTab(t) {
         document.querySelectorAll(".tab span").forEach(s=>s.classList.remove("active"));
         event.target.classList.add("active");
@@ -461,7 +610,6 @@
         document.getElementById("regForm").style.display = t=="reg"?"block":"none";
     }
 
-    // 注册
     function register() {
         let u = document.getElementById("regUser").value.trim();
         let p = document.getElementById("regPwd").value.trim();
@@ -473,12 +621,13 @@
         switchTab("login");
     }
 
-    // 登录
     function login() {
         let u = document.getElementById("loginUser").value.trim();
         let p = document.getElementById("loginPwd").value.trim();
         if(!users[u] || users[u].pwd!==p){alert("账号或密码错误");return}
+        
         currentUser = u;
+        localStorage.setItem("rememberLogin", u);
         document.getElementById("authModal").style.display = "none";
         document.getElementById("gameContainer").style.display = "block";
         document.getElementById("userInfo").innerText = "用户：" + u;
@@ -502,17 +651,13 @@
         });
     }
 
-    // 旋转
     let rotateY = 0;
     const circleBox = document.getElementById("circleBox");
-
     circleBox.addEventListener("click", ()=>{
         if(!currentUser)return;
-
         rotateY += 360;
         circleBox.style.transition = "transform 0.42s cubic-bezier(0.2,0.8,0.2,1)";
         circleBox.style.transform = `rotateY(${rotateY}deg)`;
-
         users[currentUser].count++;
         refreshCount();
         localStorage.setItem("circle37_users", JSON.stringify(users));
@@ -532,6 +677,22 @@
 
     function closeReward(){
         document.getElementById("rewardModal").style.display = "none";
+    }
+
+    // 设置界面
+    function openSetting(){
+        document.getElementById("settingModal").style.display = "flex";
+    }
+    function closeSetting(){
+        document.getElementById("settingModal").style.display = "none";
+    }
+
+    // 退出登录
+    function logout(){
+        if(!confirm("确定要退出登录吗？")) return;
+        currentUser = null;
+        localStorage.removeItem("rememberLogin");
+        location.reload();
     }
 </script>
 </body>
