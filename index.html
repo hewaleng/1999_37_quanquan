@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>重返未来1999 · 37 转圈圈</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            background: #0F0F14;
+            background-image:
+                radial-gradient(circle at 20% 10%, #2E2A3F 0%, transparent 35%),
+                radial-gradient(circle at 85% 90%, #242034 0%, transparent 35%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            font-family: "Times New Roman", "SimSun", serif;
+            color: #D4C8D8;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .retro-frame {
+            position: fixed;
+            top: 12px; left: 12px; right: 12px; bottom: 12px;
+            border: 2px solid #6A5E8D;
+            opacity: 0.4;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .retro-frame::before {
+            content: "";
+            position: absolute;
+            top: 4px; left: 4px; right: 4px; bottom: 4px;
+            border: 1px solid #6A5E8D;
+            opacity: 0.3;
+        }
+
+        .auth-modal {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.85);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
+
+        .auth-box {
+            background: #1A1626;
+            border: 2px solid #7F6AFF;
+            width: 90%;
+            max-width: 380px;
+            padding: 40px 30px;
+            border-radius: 2px;
+            text-align: center;
+            box-shadow: 0 0 40px rgba(127,106,255,0.2);
+        }
+
+        .auth-title {
+            font-size: 24px;
+            color: #E1D5FF;
+            margin-bottom: 26px;
+            letter-spacing: 2px;
+        }
+
+        .auth-input {
+            width: 100%;
+            padding: 12px 14px;
+            margin: 8px 0;
+            background: #242034;
+            border: 1px solid #6A5E8D;
+            color: #E1D5FF;
+            font-size: 15px;
+            outline: none;
+        }
+
+        .auth-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 12px;
+            background: #2D2744;
+            color: #FFE466;
+            border: 2px solid #FFE466;
+            cursor: pointer;
+            font-size: 16px;
+            transition: 0.2s;
+        }
+
+        .auth-btn:hover {
+            background: #FFE466;
+            color: #1A1626;
+        }
+
+        .tab {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+        }
+
+        .tab span {
+            flex: 1;
+            padding: 8px;
+            cursor: pointer;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab .active {
+            border-color: #7F6AFF;
+            color: #E1D5FF;
+        }
+
+        .game-container {
+            display: none;
+            text-align: center;
+        }
+
+        .user-info {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: #A899C7;
+            font-size: 14px;
+            z-index: 10;
+        }
+
+        .title {
+            font-size: 34px;
+            letter-spacing: 5px;
+            color: #E1D5FF;
+            text-shadow: 0 0 14px #7F6AFF;
+            margin-bottom: 8px;
+            z-index: 1;
+        }
+
+        .subtitle {
+            font-size: 14px;
+            color: #A899C7;
+            letter-spacing: 2px;
+            margin-bottom: 24px;
+            z-index: 1;
+        }
+
+        .count-panel {
+            background: rgba(26, 22, 38, 0.85);
+            border: 2px solid #7F6AFF;
+            padding: 14px 28px;
+            border-radius: 2px;
+            margin-bottom: 24px;
+            box-shadow: 0 0 24px rgba(127,106,255,0.15);
+            z-index: 1;
+        }
+
+        .count-text {
+            font-size: 15px;
+            color: #C0B6E0;
+        }
+
+        #totalCount {
+            font-size: 28px;
+            color: #FFE466;
+            font-weight: bold;
+            margin: 0 8px;
+        }
+
+        .rank-panel {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            background: rgba(26,22,38,0.9);
+            border: 1px solid #7F6AFF;
+            padding: 14px 18px;
+            width: 220px;
+            max-height: 260px;
+            overflow-y: auto;
+            z-index: 10;
+        }
+
+        .rank-title {
+            color: #E1D5FF;
+            font-size: 14px;
+            margin-bottom: 8px;
+            text-align: center;
+        }
+
+        .rank-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+            font-size: 13px;
+            color: #C0B6E0;
+        }
+
+        .circle-box {
+            width: 280px;
+            height: 280px;
+            position: relative;
+            cursor: pointer;
+            user-select: none;
+            margin: 0 auto;
+            z-index: 1;
+        }
+
+        .circle-box img {
+            width: 100%; height: 100%;
+            object-fit: contain;
+            border-radius: 50%;
+            border: 3px solid #8A76FF;
+            box-shadow: 0 0 45px rgba(127,106,255,0.5);
+        }
+
+        .tap-effect {
+            position: absolute;
+            width: 100%; height: 100%;
+            border-radius: 50%;
+            pointer-events: none;
+            animation: tap1999 0.5s cubic-bezier(0.22,1,0.36,1) forwards;
+        }
+
+        @keyframes tap1999 {
+            0% { transform: scale(0.92); background: rgba(140,120,255,0.12); box-shadow: 0 0 0 1px rgba(140,120,255,0.5),0 0 14px rgba(140,120,255,0.35); opacity:1; }
+            100% { transform: scale(1.22); background:transparent; box-shadow:0 0 0 1px transparent,0 0 24px transparent; opacity:0; }
+        }
+
+        .reward-modal {
+            position: fixed; top:0; left:0; width:100%; height:100%;
+            background: rgba(0,0,0,0.8); display:none;
+            align-items:center; justify-content:center; z-index:999;
+        }
+
+        .reward-box {
+            background:#1A1626; border:3px solid #FFE466;
+            width:90%; max-width:400px; padding:40px 28px;
+            text-align:center; box-shadow:0 0 60px rgba(255,228,102,0.25);
+            animation:popIn 0.5s ease;
+        }
+
+        @keyframes popIn { 0%{transform:scale(0.7);opacity:0;}100%{transform:scale(1);opacity:1;} }
+
+        .reward-title { font-size:22px; color:#FFE466; margin-bottom:20px; }
+        .reward-line { font-size:17px; color:#E1D5FF; line-height:1.6; margin-bottom:26px; }
+        .close-btn { background:#2D2744; color:#FFE466; border:2px solid #FFE466; padding:10px 24px; cursor:pointer; }
+        .close-btn:hover { background:#FFE466; color:#1A1626; }
+
+        .tip { margin-top:20px; color:#888; font-size:13px; }
+    </style>
+</head>
+<body>
+
+<div class="retro-frame"></div>
+
+<div class="auth-modal" id="authModal">
+    <div class="auth-box">
+        <div class="auth-title">重返未来 1999</div>
+        <div class="tab">
+            <span class="active" onclick="switchTab('login')">登录</span>
+            <span onclick="switchTab('reg')">注册</span>
+        </div>
+
+        <div id="loginForm">
+            <input class="auth-input" id="loginUser" placeholder="用户名">
+            <input class="auth-input" id="loginPwd" type="password" placeholder="密码">
+            <button class="auth-btn" onclick="login()">登录</button>
+        </div>
+
+        <div id="regForm" style="display:none;">
+            <input class="auth-input" id="regUser" placeholder="设置唯一用户名">
+            <input class="auth-input" id="regPwd" type="password" placeholder="设置密码">
+            <button class="auth-btn" onclick="register()">注册</button>
+        </div>
+    </div>
+</div>
+
+<div class="game-container" id="gameContainer">
+    <div class="user-info" id="userInfo">用户：</div>
+
+    <div class="rank-panel">
+        <div class="rank-title">🏆 全服转圈排行榜</div>
+        <div id="rankList"></div>
+    </div>
+
+    <div class="title">重返未来 1999</div>
+    <div class="subtitle">37 · 无尽旋转</div>
+
+    <div class="count-panel">
+        <span class="count-text">我的转圈数：</span>
+        <span id="totalCount">0</span>
+    </div>
+
+    <div id="circleBox" class="circle-box">
+        <img src="https://p.qqan.com/up/2021-3/16153661746739976.jpg" alt="37">
+    </div>
+
+    <div class="tip">点击旋转 · 每 5 圈获得留言 · 全服排行榜实时更新</div>
+</div>
+
+<div class="reward-modal" id="rewardModal">
+    <div class="reward-box">
+        <div class="reward-title">🎉 达成 🎉</div>
+        <div class="reward-line" id="rewardLine"></div>
+        <button class="close-btn" onclick="closeReward()">继续</button>
+    </div>
+</div>
+
+<script>
+    let users = JSON.parse(localStorage.getItem("circle37_users")) || {};
+    let currentUser = null;
+
+    const lines = [
+        "旋转是世界上最温柔的规律，也是我最喜欢的事。",
+        "谢谢你愿意陪我一起转圈，这样的时光很珍贵。",
+        "每一圈旋转，都像在把烦恼轻轻甩开。",
+        "你转得很认真，我都看在眼里哦。",
+        "继续转吧，也许转到第一千圈，愿望就会实现。",
+        "风的形状、云的轨迹，都和旋转一样温柔。",
+        "你是我见过最有耐心的旋转伙伴。"
+    ];
+
+    function switchTab(t) {
+        document.querySelectorAll(".tab span").forEach(s=>s.classList.remove("active"));
+        event.target.classList.add("active");
+        document.getElementById("loginForm").style.display = t=="login"?"block":"none";
+        document.getElementById("regForm").style.display = t=="reg"?"block":"none";
+    }
+
+    function register() {
+        let u = document.getElementById("regUser").value.trim();
+        let p = document.getElementById("regPwd").value.trim();
+        if(!u||!p){alert("请输入完整信息");return}
+        if(users[u]){alert("用户名已存在");return}
+        users[u] = {pwd:p, count:0};
+        localStorage.setItem("circle37_users", JSON.stringify(users));
+        alert("注册成功！请登录");
+        switchTab("login");
+    }
+
+    function login() {
+        let u = document.getElementById("loginUser").value.trim();
+        let p = document.getElementById("loginPwd").value.trim();
+        if(!users[u] || users[u].pwd!==p){alert("账号或密码错误");return}
+        currentUser = u;
+        document.getElementById("authModal").style.display = "none";
+        document.getElementById("gameContainer").style.display = "block";
+        document.getElementById("userInfo").innerText = "用户：" + u;
+        refreshCount();
+        refreshRank();
+    }
+
+    function refreshCount() {
+        document.getElementById("totalCount").innerText = users[currentUser].count;
+    }
+
+    function refreshRank() {
+        let list = document.getElementById("rankList");
+        list.innerHTML = "";
+        let arr = Object.entries(users).sort((a,b)=>b[1].count - a[1].count).slice(0,12);
+        arr.forEach(([name, data],i)=>{
+            let div = document.createElement("div");
+            div.className = "rank-item";
+            div.innerHTML = `<span>${i+1}. ${name}</span><span>${data.count}圈</span>`;
+            list.appendChild(div);
+        });
+    }
+
+    let rotateY = 0;
+    const circleBox = document.getElementById("circleBox");
+
+    circleBox.addEventListener("click", ()=>{
+        if(!currentUser)return;
+
+        rotateY += 360;
+        circleBox.style.transition = "transform 0.42s cubic-bezier(0.2,0.8,0.2,1)";
+        circleBox.style.transform = `rotateY(${rotateY}deg)`;
+
+        users[currentUser].count++;
+        refreshCount();
+        localStorage.setItem("circle37_users", JSON.stringify(users));
+        refreshRank();
+
+        if(users[currentUser].count %5 ===0){
+            document.getElementById("rewardModal").style.display = "flex";
+            document.querySelector(".reward-title").innerText = `🎉 第 ${users[currentUser].count} 圈达成 🎉`;
+            document.getElementById("rewardLine").innerText = lines[Math.floor(Math.random()*lines.length)];
+        }
+
+        const fx = document.createElement("div");
+        fx.className = "tap-effect";
+        circleBox.appendChild(fx);
+        setTimeout(()=>fx.remove(),500);
+    });
+
+    function closeReward(){
+        document.getElementById("rewardModal").style.display = "none";
+    }
+</script>
+</body>
+</html>
